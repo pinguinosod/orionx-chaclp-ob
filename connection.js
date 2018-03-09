@@ -1,8 +1,6 @@
 // Basado en codigo de AAPABLAZA que se basó en código de Orionx.io
 // https://orionx.io/developers/tutorials/consulta-basica-api
 
-const JSSHA = require('jssha')
-const fetch = require('node-fetch')
 
 // query
 var query = {                        
@@ -29,17 +27,9 @@ var query = {
   }`
 };
 
-// New actual Time-Stamp
-var timeStamp = new Date().getTime() / 1000
 
-// Creating SHA-OBJ
-const shaObj = new JSSHA('SHA-512', 'TEXT')
 
-// Operating info of shaObj
-shaObj.setHMACKey(process.env.ORIONX_API_SECRET_KEY, 'TEXT')
-var body = JSON.stringify(query)
-shaObj.update(timeStamp + body)
-var signature = shaObj.getHMAC('HEX')
+
 
 /**
  * FullQuery() execs queries to an url with a query body, apiKey and secretKey.
@@ -47,6 +37,24 @@ var signature = shaObj.getHMAC('HEX')
  * @return {Object} JS object
  */
 async function fullQuery(url) {
+  
+  //-------------------------- genero firma requerida por la api de orionx ---------------------
+  const JSSHA = require('jssha')
+  const fetch = require('node-fetch')
+  
+  // New actual Time-Stamp
+  var timeStamp = new Date().getTime() / 1000
+  
+  // Creating SHA-OBJ
+  const shaObj = new JSSHA('SHA-512', 'TEXT')
+  
+  // Operating info of shaObj
+  shaObj.setHMACKey(process.env.ORIONX_API_SECRET_KEY, 'TEXT')
+  var body = JSON.stringify(query)
+  shaObj.update(timeStamp + body)
+  var signature = shaObj.getHMAC('HEX')
+  //-------------------------- -------------------------------------------- ---------------------
+  
   // Sending request
   try {
     let res = await fetch(url, {            // Consulta tipo POST.
