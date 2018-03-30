@@ -90,6 +90,8 @@ async function main(pair) {
       console.log('resdata vacio')
     }
     
+    res.data.pair = pair
+    
     return res.data
     
   } catch (e) {
