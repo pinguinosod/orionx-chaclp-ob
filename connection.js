@@ -1,42 +1,43 @@
 // Basado en codigo de AAPABLAZA que se basó en código de Orionx.io
 // https://orionx.io/developers/tutorials/consulta-basica-api
 
-
-// query
-var query = {                        
-    query: `{
-    market(code: "CHACLP"){
-      lastTrade{
-        price
-      }
-    }
-    marketOrderBook(marketCode: "CHACLP", limit: 250) {
-      sell {
-        amount
-        limitPrice
-        accumulated
-        accumulatedPrice
-      }
-      buy {
-        amount
-        limitPrice
-        accumulated
-        accumulatedPrice
-      }
-    }  
-  }`
-};
-
-
-
-
-
 /**
  * FullQuery() execs queries to an url with a query body, apiKey and secretKey.
  * @param {String} url Url of the Orionx.io API GraphQL
+ * @param {String} pair Pair of the market you want to get
  * @return {Object} JS object
  */
-async function fullQuery(url) {
+async function fullQuery(url,pair) {
+  
+  // query
+  var query = {
+      query: `query ObtieneProfundidad($pair: ID = "") {
+      market(code: $pair){
+        lastTrade{
+          price
+        }
+      }
+      marketOrderBook(marketCode: $pair, limit: 250) {
+        sell {
+          amount
+          limitPrice
+          accumulated
+          accumulatedPrice
+        }
+        buy {
+          amount
+          limitPrice
+          accumulated
+          accumulatedPrice
+        }
+      }  
+    }`
+  };
+  
+  // variables
+  query.variables = `{
+      "pair": "`+pair+`"
+  }`
   
   //-------------------------- genero firma requerida por la api de orionx ---------------------
   const JSSHA = require('jssha')
@@ -76,16 +77,14 @@ async function fullQuery(url) {
 
 /**
  * main() prints the result of a GraphQL query to Orionx.io
- * @param {String} query GraphQL query string
+ * @param {String} pair Pair of the market you want to get
  */
-async function main(query) {
+async function main(pair) {
   try {
-    let res = await fullQuery('http://api2.orionx.io/graphql')
+    let res = await fullQuery('http://api2.orionx.io/graphql',pair)
 
-    //console.log('*** Response ***');    // Se imprime la respuesta que llega
-    //console.log(res.data);
     if(res.data) {
-      
+      // ok
     }
     else {
       console.log('resdata vacio')
@@ -100,7 +99,7 @@ async function main(query) {
 }
 
 module.exports = {
-  consulta: function () {
-    return main(query)
+  consulta: function (pair) {
+    return main(pair)
   }
 }
