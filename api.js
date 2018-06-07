@@ -18,29 +18,26 @@ http.createServer(function (req, res) {
     
     var pair = "";
     switch (req.url) {
-        case '/BTCCLP':
-            pair = "BTCCLP";
+        case '/ETHBTC':
+            pair = "ETHBTC";
         break;
-        case '/ETHCLP':
-            pair = "ETHCLP";
+        case '/XRPBTC':
+            pair = "XRPBTC";
         break;
-        case '/XRPCLP':
-            pair = "XRPCLP";
+        case '/LTCBTC':
+            pair = "LTCBTC";
         break;
-        case '/LTCCLP':
-            pair = "LTCCLP";
+        case '/CHABTC':
+            pair = "CHABTC";
         break;
-        case '/CHACLP':
-            pair = "CHACLP";
+        case '/LUKBTC':
+            pair = "LUKBTC";
         break;
-        case '/LUKCLP':
-            pair = "LUKCLP";
+        case '/BCHBTC':
+            pair = "BCHBTC";
         break;
-        case '/BCHCLP':
-            pair = "BCHCLP";
-        break;
-        case '/DASHCLP':
-            pair = "DASHCLP";
+        case '/DASHBTC':
+            pair = "DASHBTC";
         break;
         default:
             console.log('Pair '+req.url+' not found.')
